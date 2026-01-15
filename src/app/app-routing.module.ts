@@ -10,6 +10,14 @@ const routes: Routes = [
       ).then((m) => m.PatientQuickRegistrationModule),
   },
   { path: '', redirectTo: 'patient-registration', pathMatch: 'full' },
+  {
+    path: 'appointment',
+    loadChildren: () =>
+      import('./doc-appointment/doc-appointment.module').then(
+        (m) => m.AppointmentModule
+      ),
+  },
+  { path: '', redirectTo: 'appointment', pathMatch: 'full' },
 ];
 
 @NgModule({

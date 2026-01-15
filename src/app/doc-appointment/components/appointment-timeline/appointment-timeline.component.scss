@@ -1,0 +1,27 @@
+.timeline {
+  border: 1px solid #ddd;
+  overflow: auto;
+}
+
+.header,
+.row {
+  display: grid;
+  grid-template-columns: 120px repeat(7, 1fr);
+}
+
+.header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+}
+
+.time-col {
+  padding: 0.5rem;
+  font-weight: 600;
+}
+
+.day-col {
+  border-left: 1px solid #eee;
+  padding: 0.5rem;
+}

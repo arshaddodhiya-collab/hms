@@ -1,3 +1,17 @@
+.body {
+  position: relative;
+}
+
+.current-time-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: red;
+  z-index: 5;
+}
+
+
 .timeline {
   border: 1px solid #ddd;
   overflow: auto;
@@ -24,4 +38,27 @@
 .day-col {
   border-left: 1px solid #eee;
   padding: 0.5rem;
+}
+
+.today {
+  background-color: #f1f8ff;
+  border-bottom: 2px solid #1976d2;
+}
+
+.appointments-layer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 120px;
+  right: 0;
+  pointer-events: none;
+}
+
+.appointment-block {
+  position: absolute;
+  background: #bbdefb;
+  border-left: 4px solid #1976d2;
+  padding: 4px;
+  font-size: 12px;
+  border-radius: 4px;
 }

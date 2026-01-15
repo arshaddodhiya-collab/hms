@@ -9,10 +9,35 @@ import { DayColumn, TimeSlot } from '../../models/timeline.model';
 export class AppointmentTimelineComponent implements OnInit {
   days!: DayColumn[];
   slots!: TimeSlot[];
+  currentMinutes = new Date().getHours() * 60 + new Date().getMinutes();
+
+  appointments = [
+    {
+      date: '2026-01-15',
+      startMinutes: 610,
+      endMinutes: 640,
+      patientName: 'Rahul Sharma',
+    },
+  ];
 
   ngOnInit(): void {
     this.days = this.generateWeek(new Date());
     this.slots = this.generateSlots();
+  }
+
+  getAppointmentsForDay(day: DayColumn) {
+    return this.appointments.filter(
+      (a) => a.date === day.date.toISOString().split('T')[0]
+    );
+  }
+
+  getHeight(app: any): number {
+    return ((app.endMinutes - app.startMinutes) / 5) * 32;
+  }
+
+  getTop(app: any): number {
+    const startMinutes = 600;
+    return ((app.startMinutes - startMinutes) / 5) * 32;
   }
 
   generateWeek(start: Date): DayColumn[] {
@@ -45,5 +70,20 @@ export class AppointmentTimelineComponent implements OnInit {
       });
     }
     return slots;
+  }
+
+  isToday(day: DayColumn): boolean {
+    const today = new Date();
+    return (
+      day.date.getDate() === today.getDate() &&
+      day.date.getMonth() === today.getMonth() &&
+      day.date.getFullYear() === today.getFullYear()
+    );
+  }
+
+  getTopPosition(): number {
+    const startMinutes = 600; // 10:00 AM
+    const slotHeight = 32;
+    return ((this.currentMinutes - startMinutes) / 5) * slotHeight;
   }
 }

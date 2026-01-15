@@ -1,9 +1,17 @@
 <div class="timeline">
   <div class="header">
     <div class="time-col"></div>
-    <div class="day-col" *ngFor="let d of days">
-      <div class="date">{{ d.label }}</div>
-      <div class="day">{{ d.dayName }}</div>
+    <div class="day-col" *ngFor="let d of days" [class.today]="isToday(d)">
+      <div class="appointments-layer">
+        <div
+          class="appointment-block"
+          *ngFor="let app of getAppointmentsForDay(d)"
+          [style.height.px]="getHeight(app)"
+          [style.top.px]="getTop(app)"
+        >
+          {{ app.patientName }}
+        </div>
+      </div>
     </div>
   </div>
 

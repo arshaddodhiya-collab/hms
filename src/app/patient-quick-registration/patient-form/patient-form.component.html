@@ -1,0 +1,296 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<p-card header="Patient Quick Registration">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <p-divider align="left"><b>Patient Details</b></p-divider>
+
+    <div class="grid">
+      <div class="col-12 md:col-2">
+        <p-dropdown
+          formControlName="gender"
+          [options]="genders"
+          placeholder="Gender*"
+          [filter]="true"
+        ></p-dropdown>
+        <small
+          class="p-error block"
+          *ngIf="form.get('gender')?.touched && form.get('gender')?.invalid"
+        >
+          Gender is required
+        </small>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <input
+          pInputText
+          placeholder="First Name*"
+          formControlName="firstName"
+          class="w-full"
+        />
+        <small
+          class="p-error block"
+          *ngIf="
+            form.get('firstName')?.touched && form.get('firstName')?.invalid
+          "
+        >
+          Name is required
+        </small>
+      </div>
+
+      <div class="col-12 md:col-2">
+        <input
+          pInputText
+          placeholder="Middle Name"
+          formControlName="middleName"
+          class="w-full"
+        />
+      </div>
+
+      <div class="col-12 md:col-3">
+        <input
+          pInputText
+          placeholder="Last Name*"
+          formControlName="lastName"
+          class="w-full"
+        />
+        <small
+          class="p-error block"
+          *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid"
+        >
+          Last Name is required
+        </small>
+      </div>
+    </div>
+
+    <div class="grid mt-2">
+      <div class="col-12 md:col-3">
+        <p-calendar
+          formControlName="dob"
+          placeholder="DOB*"
+          [showIcon]="true"
+        ></p-calendar>
+        <small
+          class="p-error block"
+          *ngIf="form.get('dob')?.touched && form.get('dob')?.invalid"
+        >
+          DOB is required
+        </small>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <p-inputMask
+          mask="(999) 999-9999"
+          formControlName="contactNumber"
+          placeholder="Contact Number*"
+          styleClass="w-full"
+        ></p-inputMask>
+        <small
+          class="p-error block"
+          *ngIf="
+            form.get('contactNumber')?.touched &&
+            form.get('contactNumber')?.invalid
+          "
+        >
+          Valid contact number required
+        </small>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <input
+          pInputText
+          placeholder="Nationality*"
+          formControlName="nationality"
+          class="w-full"
+        />
+      </div>
+    </div>
+
+    <p-divider align="left"><b>Present Address</b></p-divider>
+
+    <div formGroupName="address" class="grid">
+      <div class="col-12">
+        <input
+          pInputText
+          placeholder="Address*"
+          formControlName="addressLine"
+          class="w-full"
+        />
+        <small
+          class="p-error block"
+          *ngIf="
+            form.get('address.addressLine')?.touched &&
+            form.get('address.addressLine')?.invalid
+          "
+        >
+          Address Line is required
+        </small>
+      </div>
+
+      <div class="col-12 md:col-3">
+        <input
+          pInputText
+          placeholder="Area*"
+          formControlName="area"
+          class="w-full"
+        />
+      </div>
+
+      <div class="col-12 md:col-3">
+        <input
+          pInputText
+          placeholder="City"
+          formControlName="city"
+          class="w-full"
+        />
+      </div>
+
+      <div class="col-12 md:col-3">
+        <p-inputMask
+          mask="999999"
+          formControlName="pincode"
+          placeholder="Pincode*"
+          styleClass="w-full"
+        ></p-inputMask>
+        <small
+          class="p-error block"
+          *ngIf="
+            form.get('address.pincode')?.touched &&
+            form.get('address.pincode')?.invalid
+          "
+        >
+          Pincode is required
+        </small>
+      </div>
+    </div>
+
+    <div class="field-checkbox mt-3">
+      <p-checkbox
+        formControlName="sameAsPermanent"
+        [binary]="true"
+        inputId="binary"
+      ></p-checkbox>
+      <label for="binary" class="ml-2"
+        >Permanent Address same as Present Address</label
+      >
+    </div>
+
+    <div
+      formGroupName="permanentAddress"
+      class="grid mt-2"
+      *ngIf="!form.get('sameAsPermanent')?.value"
+    >
+      <div class="col-12">
+        <p-divider align="left"><b>Permanent Address</b></p-divider>
+      </div>
+      <div class="col-12">
+        <input
+          pInputText
+          placeholder="Address*"
+          formControlName="addressLine"
+          class="w-full"
+        />
+      </div>
+
+      <div class="col-12 md:col-3">
+        <input
+          pInputText
+          placeholder="Area*"
+          formControlName="area"
+          class="w-full"
+        />
+      </div>
+
+      <div class="col-12 md:col-3">
+        <input
+          pInputText
+          placeholder="City"
+          formControlName="city"
+          class="w-full"
+        />
+      </div>
+
+      <div class="col-12 md:col-3">
+        <p-inputMask
+          mask="999999"
+          formControlName="pincode"
+          placeholder="Pincode*"
+          styleClass="w-full"
+        ></p-inputMask>
+      </div>
+    </div>
+
+    <p-divider align="left">
+      <div class="flex align-items-center justify-content-between">
+        <b>Emergency Contacts</b>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-plus"
+          class="p-button-text p-button-sm"
+          label="Add Contact"
+          (click)="addEmergencyContact()"
+        ></button>
+      </div>
+    </p-divider>
+
+    <div formArrayName="emergencyContacts">
+      <div
+        *ngFor="let contact of emergencyContacts.controls; let i = index"
+        [formGroupName]="i"
+        class="grid align-items-center mb-2"
+      >
+        <div class="col-12 md:col-3">
+          <input
+            pInputText
+            placeholder="Name*"
+            formControlName="name"
+            class="w-full"
+          />
+        </div>
+        <div class="col-12 md:col-3">
+          <input
+            pInputText
+            placeholder="Relation*"
+            formControlName="relation"
+            class="w-full"
+          />
+        </div>
+        <div class="col-12 md:col-3">
+          <p-inputMask
+            mask="(999) 999-9999"
+            formControlName="contactNumber"
+            placeholder="Phone*"
+            styleClass="w-full"
+          ></p-inputMask>
+        </div>
+        <div class="col-12 md:col-1">
+          <button
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-danger p-button-text"
+            (click)="removeEmergencyContact(i)"
+          ></button>
+        </div>
+      </div>
+      <div
+        class="text-500 font-italic"
+        *ngIf="emergencyContacts.controls.length === 0"
+      >
+        No emergency contacts added.
+      </div>
+    </div>
+
+    <div class="flex justify-content-end gap-2 mt-4">
+      <button
+        pButton
+        type="button"
+        label="Reset"
+        class="p-button-secondary"
+        (click)="reset()"
+      ></button>
+      <button pButton type="submit" label="Submit Registration"></button>
+    </div>
+  </form>
+</p-card>

@@ -24,6 +24,13 @@ export class PatientFormComponent implements OnInit {
     { label: 'Female', value: 'F' },
   ];
 
+  titles = [
+    { label: 'Mr', value: 'Mr' },
+    { label: 'Ms', value: 'Ms' },
+    { label: 'Mrs', value: 'Mrs' },
+    { label: 'Dr', value: 'Dr' },
+  ];
+
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
@@ -109,10 +116,29 @@ export class PatientFormComponent implements OnInit {
   submit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
+
+      // Debugging: Get all errors
+      const invalid = [];
+      const controls = this.form.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          invalid.push(name);
+          console.log(`${name} is invalid:`, controls[name].errors);
+        }
+      }
+      // Check groups
+      if (this.form.get('address')?.invalid)
+        console.log('Address group is invalid');
+      if (this.form.get('permanentAddress')?.invalid)
+        console.log('Permanent Address group is invalid');
+
+      console.log('Invalid Controls:', invalid);
+
       this.messageService.add({
         severity: 'error',
         summary: 'Validation Error',
-        detail: 'Please fill all required fields correctly.',
+        detail:
+          'Please fill all required fields correctly. Check invalid fields highlighted in red.',
       });
       return;
     }

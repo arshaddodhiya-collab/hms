@@ -1,0 +1,16 @@
+<h2>Product Search</h2>
+
+<input
+  type="text"
+  [formControl]="searchControl"
+  placeholder="Search products"
+/>
+
+<button (click)="refresh()">Refresh</button>
+
+<ng-container *ngIf="vm$ | async as vm">
+  <p *ngIf="vm.loading">Loading...</p>
+  <p *ngIf="vm.error" style="color: red">{{ vm.error }}</p>
+
+  <app-product-list [products]="vm.products"> </app-product-list>
+</ng-container>

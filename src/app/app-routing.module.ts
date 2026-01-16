@@ -18,6 +18,14 @@ const routes: Routes = [
       ),
   },
   { path: '', redirectTo: 'appointment', pathMatch: 'full' },
+  {
+    path: 'product-search',
+    loadChildren: () =>
+      import('./product-search/product-search.module').then(
+        (m) => m.ProductSearchModule
+      ),
+  },
+  { path: '', redirectTo: 'product-search', pathMatch: 'full' },
 ];
 
 @NgModule({

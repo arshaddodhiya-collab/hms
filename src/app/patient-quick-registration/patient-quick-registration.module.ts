@@ -14,9 +14,10 @@ import { CardModule } from 'primeng/card';
 import { InputMaskModule } from 'primeng/inputmask';
 import { ToastModule } from 'primeng/toast';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AddressComponent } from './components/address/address.component';
 
 @NgModule({
-  declarations: [PatientFormComponent],
+  declarations: [PatientFormComponent, AddressComponent],
   imports: [
     CommonModule,
     PatientQuickRegistrationRoutingModule,

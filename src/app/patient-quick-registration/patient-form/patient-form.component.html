@@ -118,6 +118,12 @@
         >
           Valid contact number required
         </small>
+        <small
+          class="p-error block"
+          *ngIf="form.get('contactNumber')?.hasError('uniqueContact')"
+        >
+          Contact number already registered (ends with 000)
+        </small>
       </div>
 
       <div class="col-12 md:col-3">
@@ -131,62 +137,7 @@
     </div>
 
     <p-divider align="left"><b>Present Address</b></p-divider>
-
-    <div formGroupName="address" class="grid">
-      <div class="col-12">
-        <input
-          pInputText
-          placeholder="Address*"
-          formControlName="addressLine"
-          class="w-full"
-        />
-        <small
-          class="p-error block"
-          *ngIf="
-            form.get('address.addressLine')?.touched &&
-            form.get('address.addressLine')?.invalid
-          "
-        >
-          Address Line is required
-        </small>
-      </div>
-
-      <div class="col-12 md:col-3">
-        <input
-          pInputText
-          placeholder="Area*"
-          formControlName="area"
-          class="w-full"
-        />
-      </div>
-
-      <div class="col-12 md:col-3">
-        <input
-          pInputText
-          placeholder="City"
-          formControlName="city"
-          class="w-full"
-        />
-      </div>
-
-      <div class="col-12 md:col-3">
-        <p-inputMask
-          mask="999999"
-          formControlName="pincode"
-          placeholder="Pincode*"
-          styleClass="w-full"
-        ></p-inputMask>
-        <small
-          class="p-error block"
-          *ngIf="
-            form.get('address.pincode')?.touched &&
-            form.get('address.pincode')?.invalid
-          "
-        >
-          Pincode is required
-        </small>
-      </div>
-    </div>
+    <app-address formControlName="address"></app-address>
 
     <div class="field-checkbox mt-3">
       <p-checkbox
@@ -199,49 +150,9 @@
       >
     </div>
 
-    <div
-      formGroupName="permanentAddress"
-      class="grid mt-2"
-      *ngIf="!form.get('sameAsPermanent')?.value"
-    >
-      <div class="col-12">
-        <p-divider align="left"><b>Permanent Address</b></p-divider>
-      </div>
-      <div class="col-12">
-        <input
-          pInputText
-          placeholder="Address*"
-          formControlName="addressLine"
-          class="w-full"
-        />
-      </div>
-
-      <div class="col-12 md:col-3">
-        <input
-          pInputText
-          placeholder="Area*"
-          formControlName="area"
-          class="w-full"
-        />
-      </div>
-
-      <div class="col-12 md:col-3">
-        <input
-          pInputText
-          placeholder="City"
-          formControlName="city"
-          class="w-full"
-        />
-      </div>
-
-      <div class="col-12 md:col-3">
-        <p-inputMask
-          mask="999999"
-          formControlName="pincode"
-          placeholder="Pincode*"
-          styleClass="w-full"
-        ></p-inputMask>
-      </div>
+    <div class="mt-2" *ngIf="!form.get('sameAsPermanent')?.value">
+      <p-divider align="left"><b>Permanent Address</b></p-divider>
+      <app-address formControlName="permanentAddress"></app-address>
     </div>
 
     <p-divider align="left">

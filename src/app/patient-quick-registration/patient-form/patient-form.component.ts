@@ -9,6 +9,7 @@ import {
 } from '@angular/forms';
 import { PatientService } from '../services/patient.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { uniqueContactValidator } from '../validators/unique-contact.validator';
 
 @Component({
   selector: 'app-patient-form',
@@ -46,24 +47,14 @@ export class PatientFormComponent implements OnInit {
       middleName: [''],
       lastName: ['', Validators.required],
       dob: [null, [Validators.required, this.minimumAgeValidator(18)]],
-      contactNumber: ['', Validators.required],
+      contactNumber: [
+        '',
+        Validators.required,
+        uniqueContactValidator(this.patientService),
+      ],
       nationality: ['Indian', Validators.required],
-      address: this.fb.group({
-        addressLine: ['', Validators.required],
-        area: ['', Validators.required],
-        city: [''],
-        pincode: ['', Validators.required],
-        state: [''],
-        country: ['India'],
-      }),
-      permanentAddress: this.fb.group({
-        addressLine: ['', Validators.required],
-        area: ['', Validators.required],
-        city: [''],
-        pincode: ['', Validators.required],
-        state: [''],
-        country: ['India'],
-      }),
+      address: [null],
+      permanentAddress: [null],
       sameAsPermanent: [true],
       emergencyContacts: this.fb.array([]),
     });
@@ -150,6 +141,7 @@ export class PatientFormComponent implements OnInit {
 
     this.patientService.savePatient(payload).subscribe((success) => {
       if (success) {
+        this.isSubmitted = true;
         this.messageService.add({
           severity: 'success',
           summary: 'Success',
@@ -197,5 +189,14 @@ export class PatientFormComponent implements OnInit {
         ? null
         : { minAge: { requiredAge: minAge, actualAge: age } };
     };
+  }
+
+  isSubmitted = false;
+
+  canDeactivate(): boolean {
+    if (this.form.dirty && !this.isSubmitted) {
+      return confirm('You have unsaved changes. Do you really want to leave?');
+    }
+    return true;
   }
 }

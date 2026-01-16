@@ -1,0 +1,55 @@
+<div [formGroup]="form" class="grid">
+  <div class="col-12">
+    <input
+      pInputText
+      placeholder="Address*"
+      formControlName="addressLine"
+      class="w-full"
+      (blur)="onTouched()"
+    />
+    <small
+      class="p-error block"
+      *ngIf="
+        form.get('addressLine')?.touched && form.get('addressLine')?.invalid
+      "
+    >
+      Address Line is required
+    </small>
+  </div>
+
+  <div class="col-12 md:col-3">
+    <input
+      pInputText
+      placeholder="Area*"
+      formControlName="area"
+      class="w-full"
+      (blur)="onTouched()"
+    />
+  </div>
+
+  <div class="col-12 md:col-3">
+    <input
+      pInputText
+      placeholder="City"
+      formControlName="city"
+      class="w-full"
+      (blur)="onTouched()"
+    />
+  </div>
+
+  <div class="col-12 md:col-3">
+    <p-inputMask
+      mask="999999"
+      formControlName="pincode"
+      placeholder="Pincode*"
+      styleClass="w-full"
+      (onBlur)="onTouched()"
+    ></p-inputMask>
+    <small
+      class="p-error block"
+      *ngIf="form.get('pincode')?.touched && form.get('pincode')?.invalid"
+    >
+      Pincode is required
+    </small>
+  </div>
+</div>

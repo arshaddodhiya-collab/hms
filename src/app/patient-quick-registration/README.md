@@ -41,3 +41,22 @@ The form is built using `FormBuilder` and includes:
 ## Key Logic
 - **Disable/Enable Sync**: When `sameAsPermanent` is checked, we `disable()` the permanent address controls so they are excluded from validity checks but included in `getRawValue()` when submitting.
 - **Masking**: Enforce strict input formats for critical fields like contact numbers.
+
+---
+
+## Version 2.0 Updates (Enterprise Forms Patterns)
+
+### 1. ControlValueAccessor (Reusable Address Component)
+- **Problem**: Address logic was duplicated for Present and Permanent addresses, bloating the main form.
+- **Solution**: Extracted `AddressComponent` which implements `ControlValueAccessor`.
+- **Usage**: `<app-address formControlName="address"></app-address>`. It communicates seamlessly with the parent `FormGroup` API.
+
+### 2. Async Validators (Simulated Backend Check)
+- **Feature**: Duplicate Contact Check.
+- **Implementation**: `uniqueContactValidator` uses `PatientService` to simulate an API call (with 1s delay).
+- **Behavior**: Typing a number ending in '000' triggers a "Contact number already registered" error after a debounce period.
+
+### 3. Unsaved Changes Guard
+- **Feature**: Accidental Navigation Protection.
+- **Implementation**: `UnsavedChangesGuard` checks `form.dirty && !isSubmitted`.
+- **Behavior**: If a user tries to leave the route with unsaved data, a browser confirmation dialog appears.

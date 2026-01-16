@@ -9,6 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
 
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProductListComponent } from './components/product-list/product-list.component';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [ProductSearchComponent, ProductListComponent],
@@ -20,6 +22,8 @@ import { ProductListComponent } from './components/product-list/product-list.com
     ButtonModule,
     CardModule,
     InputTextModule,
+    DialogModule,
+    DropdownModule,
   ],
 })
 export class ProductSearchModule {}

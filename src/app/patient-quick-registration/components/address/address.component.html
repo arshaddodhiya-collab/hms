@@ -7,14 +7,9 @@
       class="w-full"
       (blur)="onTouched()"
     />
-    <small
-      class="p-error block"
-      *ngIf="
-        form.get('addressLine')?.touched && form.get('addressLine')?.invalid
-      "
-    >
-      Address Line is required
-    </small>
+    @if (form.get('addressLine')?.touched && form.get('addressLine')?.invalid) {
+    <small class="p-error block"> Address Line is required </small>
+    }
   </div>
 
   <div class="col-12 md:col-3">
@@ -25,6 +20,9 @@
       class="w-full"
       (blur)="onTouched()"
     />
+    @if (form.get('area')?.touched && form.get('area')?.invalid) {
+    <small class="p-error block"> Area is required </small>
+    }
   </div>
 
   <div class="col-12 md:col-3">
@@ -45,11 +43,8 @@
       styleClass="w-full"
       (onBlur)="onTouched()"
     ></p-inputMask>
-    <small
-      class="p-error block"
-      *ngIf="form.get('pincode')?.touched && form.get('pincode')?.invalid"
-    >
-      Pincode is required
-    </small>
+    @if (form.get('pincode')?.touched && form.get('pincode')?.invalid) {
+    <small class="p-error block"> Pincode is required </small>
+    }
   </div>
 </div>

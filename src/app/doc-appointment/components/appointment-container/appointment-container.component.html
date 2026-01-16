@@ -15,12 +15,14 @@
           class="w-20rem"
         >
           <ng-template pTemplate="selectedItem" let-selectedOption>
-            <div class="flex align-items-center gap-2" *ngIf="selectedOption">
+            @if (selectedOption) {
+            <div class="flex align-items-center gap-2">
               <div class="font-bold">{{ selectedOption.name }}</div>
               <div class="text-sm text-500">
                 ({{ selectedOption.specialization }})
               </div>
             </div>
+            }
           </ng-template>
           <ng-template pTemplate="item" let-doctor>
             <div class="flex flex-column">
@@ -43,13 +45,14 @@
 
     <!-- Timeline -->
     <div class="flex-grow-1 overflow-auto p-3">
+      @if (selectedDoctor) {
       <app-appointment-timeline
-        *ngIf="selectedDoctor"
         [appointments]="appointments"
         [targetDate]="selectedDate"
         (slotClick)="onSlotClick($event)"
         (appointmentUpdate)="onAppointmentUpdate($event)"
       ></app-appointment-timeline>
+      }
     </div>
 
     <!-- Booking Dialog -->

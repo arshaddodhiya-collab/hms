@@ -1,28 +1,33 @@
 <div class="timeline">
   <div class="header">
     <div class="time-col"></div>
-    <div class="day-col" *ngFor="let d of days" [class.today]="isToday(d)">
+    @for (d of days; track d.date) {
+    <div class="day-col" [class.today]="isToday(d)">
       <div class="appointments-layer">
+        @for (app of getAppointmentsForDay(d); track app.id) {
         <div
           class="appointment-block"
-          *ngFor="let app of getAppointmentsForDay(d)"
           [style.height.px]="getHeight(app)"
           [style.top.px]="getTop(app)"
           [appAppointmentStatus]="app.type"
           cdkDrag
+          (cdkDragEnded)="onDragEnded($event, app)"
         >
           {{ app.patientName }}
         </div>
+        }
       </div>
     </div>
+    }
   </div>
 
   <div class="body">
-    <div class="row" *ngFor="let slot of slots">
+    @for (slot of slots; track slot.time) {
+    <div class="row">
       <div class="time-col">{{ slot.time }}</div>
 
+      @for (d of days; track d.date) {
       <app-appointment-slot
-        *ngFor="let d of days"
         [day]="d"
         [slot]="slot"
         (click)="
@@ -34,6 +39,8 @@
         "
       >
       </app-appointment-slot>
+      }
     </div>
+    }
   </div>
 </div>

@@ -1,24 +1,55 @@
-<div class="card">
-  <p-table [value]="products" [tableStyle]="{ 'min-width': '50rem' }">
+<div class="card p-0 border-none shadow-none">
+  <p-table
+    [value]="products"
+    [rowHover]="true"
+    [paginator]="true"
+    [rows]="5"
+    [showCurrentPageReport]="true"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    styleClass="p-datatable-sm p-datatable-gridlines"
+  >
     <ng-template pTemplate="header">
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Price</th>
+        <th style="width: 10%">ID</th>
+        <th style="width: 30%">Name</th>
+        <th style="width: 30%">Category</th>
+        <th style="width: 30%">Price</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr>
-        <td>{{ product.id }}</td>
-        <td>{{ product.name }}</td>
-        <td>{{ product.category }}</td>
-        <td>{{ product.price | currency : "USD" }}</td>
+        <td>
+          <span class="p-column-title font-bold md:hidden mr-2">ID:</span
+          >{{ product.id }}
+        </td>
+        <td>
+          <span class="p-column-title font-bold md:hidden mr-2">Name:</span
+          >{{ product.name }}
+        </td>
+        <td>
+          <span class="p-column-title font-bold md:hidden mr-2">Category:</span>
+          <span
+            class="inline-block border-round px-2 py-1 bg-blue-100 text-blue-700 text-sm"
+          >
+            {{ product.category }}
+          </span>
+        </td>
+        <td class="font-bold text-green-600">
+          <span class="p-column-title font-bold md:hidden text-900 mr-2"
+            >Price:</span
+          >{{ product.price | currency : "USD" }}
+        </td>
       </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
       <tr>
-        <td colspan="4" class="text-center">No products found.</td>
+        <td colspan="4" class="text-center p-4">
+          <div class="flex flex-column align-items-center text-500">
+            <i class="pi pi-inbox text-4xl mb-2"></i>
+            <span>No products found matching your search.</span>
+          </div>
+        </td>
       </tr>
     </ng-template>
   </p-table>

@@ -12,7 +12,7 @@ export class PatientService {
 
   checkContactUnique(contact: string): Observable<boolean> {
     // Mock check: numbers ending in '000' are duplicates
-    const isDuplicate = contact.endsWith('000');
+    const isDuplicate = contact && contact.endsWith('000');
     return of(!isDuplicate).pipe(delay(1000));
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { DayColumn, TimeSlot } from '../../models/timeline.model';
 
 @Component({
@@ -7,18 +7,13 @@ import { DayColumn, TimeSlot } from '../../models/timeline.model';
   styleUrls: ['./appointment-timeline.component.scss'],
 })
 export class AppointmentTimelineComponent implements OnInit {
+  @Input() appointments: any[] = [];
+  @Input() targetDate: Date = new Date();
+  @Output() slotClick = new EventEmitter<any>();
+
   days!: DayColumn[];
   slots!: TimeSlot[];
   currentMinutes = new Date().getHours() * 60 + new Date().getMinutes();
-
-  appointments = [
-    {
-      date: '2026-01-15',
-      startMinutes: 610,
-      endMinutes: 640,
-      patientName: 'Rahul Sharma',
-    },
-  ];
 
   ngOnInit(): void {
     this.days = this.generateWeek(new Date());
@@ -26,6 +21,7 @@ export class AppointmentTimelineComponent implements OnInit {
   }
 
   getAppointmentsForDay(day: DayColumn) {
+    if (!this.appointments) return [];
     return this.appointments.filter(
       (a) => a.date === day.date.toISOString().split('T')[0]
     );

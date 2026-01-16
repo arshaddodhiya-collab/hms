@@ -1,21 +1,89 @@
 <p-card>
-  <div class="grid align-items-center mb-3">
-    <div class="col-12 md:col-3">
-      <p-dropdown placeholder="Faculty"></p-dropdown>
+  <div class="h-full flex flex-column surface-ground">
+    <!-- Header -->
+    <div
+      class="p-3 surface-card shadow-1 flex justify-content-between align-items-center"
+    >
+      <div class="flex align-items-center gap-3">
+        <h2 class="m-0 text-900">Appointment Scheduler</h2>
+        <p-dropdown
+          [options]="(doctors$ | async) || []"
+          [(ngModel)]="selectedDoctor"
+          optionLabel="name"
+          placeholder="Select a Doctor"
+          (onChange)="onDoctorChange($event.value)"
+          class="w-20rem"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2" *ngIf="selectedOption">
+              <div class="font-bold">{{ selectedOption.name }}</div>
+              <div class="text-sm text-500">
+                ({{ selectedOption.specialization }})
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="item" let-doctor>
+            <div class="flex flex-column">
+              <div class="font-bold">{{ doctor.name }}</div>
+              <div class="text-sm text-500">{{ doctor.specialization }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="flex gap-2">
+        <button
+          pButton
+          label="Today"
+          class="p-button-outlined"
+          (click)="resetDate()"
+        ></button>
+      </div>
     </div>
 
-    <div class="col-12 md:col-4">
-      <p-dropdown placeholder="Doctor Name"></p-dropdown>
+    <!-- Timeline -->
+    <div class="flex-grow-1 overflow-auto p-3">
+      <app-appointment-timeline
+        *ngIf="selectedDoctor"
+        [appointments]="appointments"
+        [targetDate]="selectedDate"
+        (slotClick)="onSlotClick($event)"
+      ></app-appointment-timeline>
     </div>
 
-    <div class="col-12 md:col-3">
-      <input pInputText placeholder="Patient Name" />
-    </div>
-
-    <div class="col-12 md:col-2 text-right">
-      <button pButton icon="pi pi-chart-bar"></button>
-    </div>
+    <!-- Booking Dialog -->
+    <p-dialog
+      header="Book Appointment"
+      [(visible)]="showBookingDialog"
+      [modal]="true"
+      [style]="{ width: '30vw' }"
+    >
+      <div class="flex flex-column gap-3">
+        <div class="flex flex-column gap-2">
+          <label>Patient Name</label>
+          <input pInputText [(ngModel)]="bookingForm.patientName" />
+        </div>
+        <div class="flex flex-column gap-2">
+          <label>Type</label>
+          <p-dropdown
+            [options]="['New', 'Follow-up']"
+            [(ngModel)]="bookingForm.type"
+          ></p-dropdown>
+        </div>
+        <div class="flex flex-column gap-2">
+          <label>Notes</label>
+          <input pInputText [(ngModel)]="bookingForm.notes" />
+        </div>
+      </div>
+      <ng-template pTemplate="footer">
+        <button
+          pButton
+          label="Cancel"
+          class="p-button-text"
+          (click)="showBookingDialog = false"
+        ></button>
+        <button pButton label="Book" (click)="saveAppointment()"></button>
+      </ng-template>
+    </p-dialog>
   </div>
-
-  <app-appointment-timeline></app-appointment-timeline>
 </p-card>

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
 import { AppointmentRoutingModule } from './doc-appointment-routing.module';
 
 import { AppointmentContainerComponent } from './components/appointment-container/appointment-container.component';
@@ -20,10 +22,12 @@ import { CardModule } from 'primeng/card';
   imports: [
     CommonModule,
     AppointmentRoutingModule,
+    FormsModule,
     DropdownModule,
     ButtonModule,
     InputTextModule,
     CardModule,
+    DialogModule,
   ],
 })
 export class AppointmentModule {}

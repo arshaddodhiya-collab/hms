@@ -19,7 +19,18 @@
     <div class="row" *ngFor="let slot of slots">
       <div class="time-col">{{ slot.time }}</div>
 
-      <app-appointment-slot *ngFor="let d of days" [day]="d" [slot]="slot">
+      <app-appointment-slot
+        *ngFor="let d of days"
+        [day]="d"
+        [slot]="slot"
+        (click)="
+          slotClick.emit({
+            day: d.date,
+            time: slot.time,
+            minutes: slot.minutes
+          })
+        "
+      >
       </app-appointment-slot>
     </div>
   </div>

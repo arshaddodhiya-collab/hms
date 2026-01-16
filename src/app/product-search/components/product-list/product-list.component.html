@@ -1,12 +1,12 @@
 <div class="card p-0 border-none shadow-none">
   <p-table
     [value]="products"
-    [rowHover]="true"
     [paginator]="true"
-    [rows]="5"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
     [showCurrentPageReport]="true"
-    [tableStyle]="{ 'min-width': '50rem' }"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+    [tableStyle]="{ 'min-width': '50rem' }"
     styleClass="p-datatable-sm p-datatable-gridlines"
   >
     <ng-template pTemplate="header">

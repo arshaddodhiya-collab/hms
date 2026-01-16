@@ -45,3 +45,30 @@ This service acts as a local store using the MVVM (Model-View-ViewModel) pattern
 ## Key Logic
 - **No manual `.subscribe()`**: The component logic is entirely declarative. The template uses `vm$ | async`, ensuring no memory leaks and cleaner code.
 - **Mock Data**: Since there is no backend, `ProductSearchStore` returns hardcoded data after a simulated network delay.
+
+---
+
+## Version 2.0 Updates (Modernization)
+
+### 1. Angular Signals
+The `ProductSearchStore` was refactored to use **Angular Signals** (`signal`, `computed`, `effect`) for state management, replacing local `BehaviorSubject` instances. This simplifies the reactivity model while using `toObservable` to maintain the powerful RxJS debounce/switchMap operators for the search logic.
+
+```typescript
+// Signal-based ViewModel
+readonly vm = computed(() => ({
+  products: this._products(),
+  loading: this._loading(),
+  error: this._error(),
+}));
+```
+
+### 2. Robust Networking
+- **Retry Logic**: Added `retry(3)` to the data fetching pipe. If the (mock) API fails, it auto-retries 3 times before showing an error to the user, mimicking production-grade resilience.
+- **Large Dataset**: The mock data generator now creates **1,000 items** (`Product Item 1` to `Product Item 1000`) to test scalability.
+
+### 3. Pagination Support
+The view was updated to support large datasets:
+- **Pagination**: Replaced standard table with **Client-side Pagination** (`[paginator]="true"`).
+- **Virtual Scroll (Alternative)**: We initially implemented Virtual Scrolling (`p-virtualScroller`) for high-performance rendering of 1000 items but switched to Pagination based on user preference for better navigability.
+
+These changes bring the module closer to enterprise standards by handling large data volumes and network instability gracefully.

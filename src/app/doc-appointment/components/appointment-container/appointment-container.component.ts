@@ -51,10 +51,15 @@ export class AppointmentContainerComponent implements OnInit {
   };
   selectedSlot: any = null;
 
-  onSlotClick(event: { day: Date; time: string; minutes: number }) {
+  onSlotClick(event: any) {
     this.selectedSlot = event;
-    this.bookingForm = { patientName: '', type: 'New', notes: '' };
     this.showBookingDialog = true;
+  }
+
+  onAppointmentUpdate(updatedApp: Appointment) {
+    this.appointmentService.updateAppointment(updatedApp).subscribe(() => {
+      this.fetchAppointments();
+    });
   }
 
   saveAppointment() {

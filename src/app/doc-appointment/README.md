@@ -45,3 +45,24 @@ This module provides a visual interface for scheduling doctor appointments. It f
 ## Key Logic
 - **Grid Generation**: `generateWeek()` and `generateSlots()` create the visual structure.
 - **Positioning**: `getTop()` calculates the `top` pixel value based on minutes from start time (e.g., `(startMinutes - 600) / 5 * 32px`).
+
+---
+
+## Version 2.0 Updates (Optimization)
+
+### 1. Performance: OnPush Change Detection
+We switched `AppointmentTimelineComponent` to use **`ChangeDetectionStrategy.OnPush`**.
+- **Benefit**: Angular no longer checks the entire specific timeline component tree on every single global event (keypress, timer, mousemove). It only updates when the Input `appointments` reference changes.
+- **Implementation**: Updated `AppointmentService` to return **immutable arrays** (new array references) on every `add` or `delete` operation, ensuring OnPush triggers correctly.
+
+### 2. Smart Styling Directives
+Introduced `[appAppointmentStatus]` directive to remove styling logic from the template.
+- **Old Way**: Multiple `[ngClass]` and `[style.color]` bindings cluttering HTML.
+- **New Way**: A single directive `<div [appAppointmentStatus]="app.type">` handles all CSS classes (colors, borders) for 'New' vs 'Follow-up' types.
+
+### 3. Interactive Drag & Drop
+Integrated **@angular/cdk/drag-drop** to allow intuitive rescheduling.
+- **Feature**: Users can drag an appointment block up or down to change its time.
+- **Logic**: The `onDragEnded` event calculates the new start time based on pixel distance dragged (snaps to 5-minute slots) and calls `AppointmentService.updateAppointment()`.
+
+These improvements transform the module from a simple display grid into a high-performance interactive scheduling tool.

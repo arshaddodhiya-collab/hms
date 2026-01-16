@@ -13,11 +13,15 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { AppointmentStatusDirective } from './directives/appointment-status.directive';
+
 @NgModule({
   declarations: [
     AppointmentContainerComponent,
     AppointmentTimelineComponent,
     AppointmentSlotComponent,
+    AppointmentStatusDirective,
   ],
   imports: [
     CommonModule,
@@ -27,6 +31,7 @@ import { CardModule } from 'primeng/card';
     ButtonModule,
     InputTextModule,
     CardModule,
+    DragDropModule,
     DialogModule,
   ],
 })

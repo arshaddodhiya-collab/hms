@@ -8,6 +8,8 @@
           *ngFor="let app of getAppointmentsForDay(d)"
           [style.height.px]="getHeight(app)"
           [style.top.px]="getTop(app)"
+          [appAppointmentStatus]="app.type"
+          cdkDrag
         >
           {{ app.patientName }}
         </div>

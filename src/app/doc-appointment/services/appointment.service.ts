@@ -46,12 +46,22 @@ export class AppointmentService {
       return of(false);
     }
 
-    this.appointments.push({ ...appointment, id: Date.now() });
+    this.appointments = [
+      ...this.appointments,
+      { ...appointment, id: Date.now() },
+    ];
     return of(true);
   }
 
   cancelAppointment(id: number): Observable<boolean> {
     this.appointments = this.appointments.filter((a) => a.id !== id);
+    return of(true);
+  }
+
+  updateAppointment(updatedApp: Appointment): Observable<boolean> {
+    this.appointments = this.appointments.map((a) =>
+      a.id === updatedApp.id ? updatedApp : a
+    );
     return of(true);
   }
 }

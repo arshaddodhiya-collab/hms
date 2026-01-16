@@ -1,15 +1,25 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { CdkDragEnd } from '@angular/cdk/drag-drop';
 import { DayColumn, TimeSlot } from '../../models/timeline.model';
 
 @Component({
   selector: 'app-appointment-timeline',
   templateUrl: './appointment-timeline.component.html',
   styleUrls: ['./appointment-timeline.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppointmentTimelineComponent implements OnInit {
   @Input() appointments: any[] = [];
   @Input() targetDate: Date = new Date();
   @Output() slotClick = new EventEmitter<any>();
+  @Output() appointmentUpdate = new EventEmitter<any>();
 
   days!: DayColumn[];
   slots!: TimeSlot[];
@@ -81,5 +91,42 @@ export class AppointmentTimelineComponent implements OnInit {
     const startMinutes = 600; // 10:00 AM
     const slotHeight = 32;
     return ((this.currentMinutes - startMinutes) / 5) * slotHeight;
+  }
+
+  onDragEnded(event: CdkDragEnd, app: any) {
+    const element = event.source.element.nativeElement;
+    const transform = element.style.transform;
+    const regex = /translate3d\(0px, (-?\d+)px, 0px\)/;
+    const match = transform.match(regex);
+    let yDelta = 0;
+
+    // reset position visually (let angular re-render)
+    event.source._dragRef.reset();
+
+    if (match) {
+      yDelta = parseInt(match[1]);
+    } else {
+      // Fallback for simple translate
+      const simpleRegex = /translate\(0px, (-?\d+)px\)/;
+      const matchSimple = transform.match(simpleRegex);
+      if (matchSimple) yDelta = parseInt(matchSimple[1]);
+    }
+
+    // Calculate new minutes
+    // 32px = 5 mins
+    const minutesDelta = Math.round(yDelta / 32) * 5;
+    const newStart = app.startMinutes + minutesDelta;
+    const duration = app.endMinutes - app.startMinutes;
+
+    if (newStart < 600 || newStart + duration > 1020) {
+      // Out of bounds - revert (handled by reset above effectively if we don't emit)
+      return;
+    }
+
+    this.appointmentUpdate.emit({
+      ...app,
+      startMinutes: newStart,
+      endMinutes: newStart + duration,
+    });
   }
 }

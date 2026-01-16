@@ -48,6 +48,7 @@
         [appointments]="appointments"
         [targetDate]="selectedDate"
         (slotClick)="onSlotClick($event)"
+        (appointmentUpdate)="onAppointmentUpdate($event)"
       ></app-appointment-timeline>
     </div>
 
